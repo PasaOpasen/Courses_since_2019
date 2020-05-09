@@ -89,6 +89,73 @@ StringSpeedDown('x**2+y**2',1,1)
 
 
 
+import numpy as np
+
+def der(g, r, eps = 0.00001):
+    right = (g(r+eps)-g(r))/eps
+    left = (-g(r-eps)+g(r))/eps
+    res = not np.isclose(right,left,atol=0.001)
+    if res:
+        print('right = {}  left = {}     eps = {}'.format(right,left,eps))
+    return res
+
+
+def SpeedDown2(f, x0, y0, eps=0.001, maxiter = 150):
+    
+    grad = lambda x, y: (sp.derivative(lambda x_: f(x_,y),x), 
+                         sp.derivative(lambda y_: f(x,y_),y),
+                         der(lambda x_: f(x_,y),x,eps/100),
+                         der(lambda y_: f(x,y_),y,eps/100)      )
+    
+    g1, g2, t1, t2 = grad(x0,y0)
+    
+    if t1 or t2:
+        return 'derivative does not exist  iter = {}'.format(0)
+    
+    k = 0
+    
+    while m.sqrt(g1*g1+g2*g2)>eps and k<maxiter:
+                    
+        minimized = lambda t: f(x0-t*g1,y0-t*g2)
+        
+        minimum = opt.minimize_scalar(minimized,bounds = (0,100), method='bounded')
+        
+        x0=x0-minimum.x*g1
+        y0=y0-minimum.x*g2
+        
+        g1, g2, t1, t2 = grad(x0,y0)
+        
+        if t1 or t2:
+            return 'derivative does not exist  iter = {}'.format(k+1)
+        
+        k+=1
+    
+    print('result = {}  x = {}  y = {}  count of iterations = {}  |gradient| = {}'.format(f(x0,y0),x0,y0,k,m.sqrt(g1*g1+g2*g2)))
+    
+    return x0, y0
+
+
+SpeedDown2(lambda x,y: x**2 + y**2, 100, 200)
+
+SpeedDown2(lambda x,y: truepower(x,5.5) + truepower(y,5.1), 10, 20) # work but does not converge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
