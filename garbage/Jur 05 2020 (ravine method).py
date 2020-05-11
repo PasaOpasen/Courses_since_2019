@@ -16,7 +16,12 @@ import numpy as np
 
 
 def make_step(f, begin, count_point=20, count_iter = 5, eps = 0.01):
-    """Это функция, которая делает несколько шагов случайного спуска"""
+    """Это функция, которая делает несколько шагов случайного спуска
+    
+    вокруг точки begin (в виде массива numpy) случайным образом выбирается count_point точек
+    путём случаного смещения begin на 100eps% в обе стороны,
+    из всех точек выбирается наилучшая, спуск повторяется count_iter раз    
+    """
     
     res = begin.copy()
     mn = f(*res)
@@ -37,6 +42,13 @@ def make_step(f, begin, count_point=20, count_iter = 5, eps = 0.01):
    
     
 def RavineDown(f, ro1, h=0.1, max_count = 15, count_point=20, count_iter = 5, eps = 0.01):
+    """Метод овражного спуска
+    
+    аргументы: функция, начальное значение в виде массива numpy,
+    шаг спуска, максимальное число итераций спуска и 3 параметра для метода случайного спуска
+    
+    функция прекращает работу, когда кончаются итерации или когда сходимость сильно замедлилась или прекратилась
+    """
     
     print(f"Start result = {f(*ro1)} for arg = {ro1}")
     
@@ -64,7 +76,7 @@ def RavineDown(f, ro1, h=0.1, max_count = 15, count_point=20, count_iter = 5, ep
         print(f"{k}) result = {f2}")
         
         if f1 - f2 < 0.000001: # если метод начал сходиться очень медленно или расходиться, прервать
-            break
+            return r1.copy()
     
     return r2.copy()
     
@@ -73,11 +85,13 @@ def RavineDown(f, ro1, h=0.1, max_count = 15, count_point=20, count_iter = 5, ep
 
 # овражная функция    min = (8, 1)
     
-f1 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+(x-8)**2-1)**2+1
+f1 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+(x-8)**2-1)**2+1; plot_function3D(f1)
 
-f2 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+x-9)**2+1
+f2 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+x-9)**2+1; plot_function3D(f2)
 
-f3 = lambda x,y: 70*(x-8)**2 + (y-1)**2 +1
+f3 = lambda x,y: 70*(x-8)**2 + (y-1)**2 +1; plot_function3D(f3)
+
+f4 = lambda x,y,z,q: 70*(x-8)**2 + (y-1)**2 +1+70*(z-8)**2 + (q-1)**2
 
 
 # как использовать с numpy
@@ -86,11 +100,14 @@ f1(*np.array([1,2]))
 make_step(f1,np.array([1,2]),20,5,0.01)
 
 
-RavineDown(f1,np.array([1,2]), h=0.1, max_count = 25, count_point=20, count_iter =5, eps = 0.01)
+RavineDown(f1, np.array([1,2]), h=0.1, max_count = 250, count_point=20, count_iter =5, eps = 0.01)
 
-RavineDown(f2,np.array([1,-2]), h=0.1, max_count = 25, count_point=20, count_iter =5, eps = 0.01)
+RavineDown(f2, np.array([1,3]), h=0.2, max_count = 250, count_point=20, count_iter =5, eps = 0.01)
 
-RavineDown(f3,np.array([2,2]), h=0.1, max_count = 25, count_point=20, count_iter =5, eps = 0.01)
+RavineDown(f3, np.array([2,5]), h=0.4, max_count = 250, count_point=20, count_iter =5, eps = 0.01)
+
+RavineDown(f4, np.array([2,2,0,0]), h=0.5, max_count = 250, count_point=30, count_iter = 10, eps = 0.01)
+
 
 
 
