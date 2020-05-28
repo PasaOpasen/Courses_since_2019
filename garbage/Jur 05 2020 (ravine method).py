@@ -85,11 +85,11 @@ def RavineDown(f, ro1, h=0.1, max_count = 15, count_point=20, count_iter = 5, ep
 
 # овражная функция    min = (8, 1)
     
-f1 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+(x-8)**2-1)**2+1; plot_function3D(f1)
+f1 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+(x-8)**2-1)**2+1; plot_function3D(f1,title='f1',savepath='f1.html')
 
-f2 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+x-9)**2+1; plot_function3D(f2)
+f2 = lambda x,y: (x-8)**2 + (y-1)**2 +70*(y+x-9)**2+1; plot_function3D(f2,title='f2',savepath='f2.html')
 
-f3 = lambda x,y: 70*(x-8)**2 + (y-1)**2 +1; plot_function3D(f3)
+f3 = lambda x,y: 70*(x-8)**2 + (y-1)**2 +1; plot_function3D(f3,title='f3',savepath='f3.html')
 
 f4 = lambda x,y,z,q: 70*(x-8)**2 + (y-1)**2 +1+70*(z-8)**2 + (q-1)**2
 

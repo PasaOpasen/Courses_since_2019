@@ -24,6 +24,7 @@ ggplot(dt, aes(x=species))+geom_density()#b
 
 
 
+
 dt = read_table2('dataset_209770_6.txt')
 
 ggplot(dt, aes(x=x,y=y))+geom_point()

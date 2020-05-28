@@ -10,7 +10,7 @@ import numpy as np
 from plotly.offline import plot
 
 
-def plot_function3D(f, xmin=5, xmax=10, ymin=-5, ymax=5,xcount=50,ycount = 50, title = 'function 3D'):
+def plot_function3D(f, xmin=5, xmax=10, ymin=-5, ymax=5,xcount=50,ycount = 50, title = 'function 3D', savepath=None):
     z = np.empty((xcount,ycount))
     x= np.linspace(xmin,xmax,xcount)
     y=np.linspace(ymin,ymax,ycount)
@@ -27,8 +27,15 @@ def plot_function3D(f, xmin=5, xmax=10, ymin=-5, ymax=5,xcount=50,ycount = 50, t
                   margin=dict(l=65, r=50, b=65, t=90)
                   )
 
+    if savepath != None:
+        fig.write_html(savepath)  
+
     #fig.show()
     plot(fig)
+    
+  
+    
+
 
 
 
